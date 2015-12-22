@@ -36,14 +36,30 @@ public:
 	afx_msg void OnBnClickedOpenpic();
 	//路径
 	CString mPath;
+	CString mPath1;
+	CString mPath2;
+	CString mPath3;
+	CString mPath4;
 	//源图片
 	cv::Mat sourceImg;
+	cv::Mat sourceImg1;
+	cv::Mat sourceImg2;
+	cv::Mat sourceImg3;
+	cv::Mat sourceImg4;
+	//提取通道后
+	IplImage *rImg, *bImg, *gImg, *xImg;
 	int Pic_Size;
 	afx_msg void OnBnClickedExtractinfo();
-	afx_msg void EnCode2();
+//	afx_msg void EnCode2();
 	CString code_info;
-	afx_msg void DeCode();
+//	afx_msg void DeCode();
 	CFont m_font;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 //	afx_msg void OnStnClickedTitle();
+	unsigned char RSA_decode(unsigned char pixes);
+	void EncodeImg(IplImage*);
+	IplImage* DncodeImg(IplImage*);
+	afx_msg void OnBnClickedDecode();
+	afx_msg void OnBnClickedOpencode();
+	afx_msg void OnBnClickedSave();
 };
