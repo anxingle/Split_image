@@ -296,8 +296,6 @@ void CExtract_InfoDlg::OnBnClickedOpenpic()
 	cv::Mat Img = cv::Mat(zoomImgByMaxSide(&IplImage(sourceImg), Pic_Size), false);//将原图长边压缩至图片控件边长Pic_Size
 
 	ShowImage(&IplImage(Img), IDC_SHOW1);        // 调用显示图片函数
-
-	
 }
 
 //提取图片相关信息
@@ -320,7 +318,10 @@ void CExtract_InfoDlg::OnBnClickedExtractinfo()
 			uchar* ptr = (uchar*)(bImg->imageData + y * bImg->widthStep / (sizeof(uchar)));
 			for (int x = 0; x < bImg->width; x++)
 			{
-				ptr[x] = RSA_decode(ptr[x]);
+				if (x / 2 == 0)
+					ptr[x] = RSA_decode2(ptr[x]);
+				else
+					ptr[x] = RSA_decode(ptr[x]);
 			}
 		}
 	}
@@ -329,7 +330,10 @@ void CExtract_InfoDlg::OnBnClickedExtractinfo()
 			uchar* ptr2 = (uchar*)(gImg->imageData + y * gImg->widthStep / (sizeof(uchar)));
 			for (int x = 0; x < gImg->width; x++)
 			{
-				ptr2[x] = RSA_decode(ptr2[x]);
+				if (x / 2 == 0)
+					ptr2[x] = RSA_decode2(ptr2[x]);
+				else
+					ptr2[x] = RSA_decode(ptr2[x]);
 			}
 		}
 	}
@@ -338,7 +342,10 @@ void CExtract_InfoDlg::OnBnClickedExtractinfo()
 			uchar* ptr3 = (uchar*)(rImg->imageData + y * rImg->widthStep / (sizeof(uchar)));
 			for (int x = 0; x < rImg->width; x++)
 			{
-				ptr3[x] = RSA_decode(ptr3[x]);
+				if (x / 2 == 0)
+					ptr3[x] = RSA_decode2(ptr3[x]);
+				else
+					ptr3[x] = RSA_decode(ptr3[x]);
 			}
 		}
 	}
@@ -356,6 +363,8 @@ void CExtract_InfoDlg::OnBnClickedExtractinfo()
 	cv::Mat Img3 = cv::Mat(zoomImgByMaxSide(gImg, Pic_Size / 2), false);//将原图长边压缩至图片控件边长Pic_Size
 	ShowImage(&IplImage(Img3), IDC_SHOW4);
 
+	cv::Mat Img4 = cv::Mat(zoomImgByMaxSide(xImg, Pic_Size / 2), false);//将原图长边压缩至图片控件边长Pic_Size
+	ShowImage(&IplImage(Img4), IDC_SHOW5);
 
 
 	//	cvMerge(bImg, gImg, rImg, NULL, xImg);
@@ -499,31 +508,43 @@ unsigned char CExtract_InfoDlg::RSA_decode(unsigned char pixes)
 	pixes -= 200;
 	break;
 	case(pixes > 110 && pixes <= 180) :
-
 	break;
 	case():
-
-
 	}  */
-	if (pixes > 180)
-	{
-		pixes -= 180;
-	}
-	else if (pixes > 125 && pixes <= 175)
-	{
-		pixes -= 50;
-	}
-	else if (pixes > 75 && pixes <= 125)
-	{
-		pixes += 50;
-	}
-	else if (pixes <= 75)
-	{
-		pixes += 180;
-	}
+	if (pixes > 235)
+		pixes -= 235;
+	else if (pixes > 215 && pixes <= 235)
+		pixes -= 195;
+	else if (pixes > 195 && pixes <= 215)
+		pixes -= 155;
+	else if (pixes > 175 && pixes <= 195)
+		pixes -= 115;
+	else if (pixes > 155 && pixes <= 175)
+		pixes -= 75;
+	else if (pixes > 135 && pixes <= 155)
+		pixes -= 35;
+	else if (pixes >= 0 && pixes < 20)
+		pixes += 235;
+	else if (pixes>=20 &&pixes<40)
+		pixes += 195;
+	else if (pixes>=40&& pixes<60)
+	pixes += 155;
+	else if (pixes>=60&& pixes<80)
+	pixes += 115;
+	else if (pixes>=80&& pixes <100)
+	pixes += 75;
+	else if (pixes>=100&&pixes <120)
+	pixes += 35;
 	return pixes;
 }
-
+unsigned char CExtract_InfoDlg::RSA_decode2(unsigned char pixes)
+{
+	if (pixes > 135)
+		pixes -= 135;
+	else
+		pixes += 135;
+	return pixes;
+}
 
 void CExtract_InfoDlg::EncodeImg(IplImage* src)
 {
@@ -537,7 +558,6 @@ void CExtract_InfoDlg::EncodeImg(IplImage* src)
 			}
 		}
 	}
-
 }
 
 
@@ -566,7 +586,10 @@ void CExtract_InfoDlg::OnBnClickedDecode()
 			uchar* ptr = (uchar*)(bImg->imageData + y * bImg->widthStep / (sizeof(uchar)));
 			for (int x = 0; x < bImg->width; x++)
 			{
-				ptr[x] = RSA_decode(ptr[x]);
+				if (x / 2 == 0)
+					ptr[x] = RSA_decode2(ptr[x]);
+				else
+					ptr[x] = RSA_decode(ptr[x]);
 			}
 		}
 	}
@@ -575,7 +598,10 @@ void CExtract_InfoDlg::OnBnClickedDecode()
 			uchar* ptr2 = (uchar*)(gImg->imageData + y * gImg->widthStep / (sizeof(uchar)));
 			for (int x = 0; x < gImg->width; x++)
 			{
-				ptr2[x] = RSA_decode(ptr2[x]);
+				if (x / 2 == 0)
+					ptr2[x] = RSA_decode2(ptr2[x]);
+				else
+					ptr2[x] = RSA_decode(ptr2[x]);
 			}
 		}
 	}
@@ -584,7 +610,10 @@ void CExtract_InfoDlg::OnBnClickedDecode()
 			uchar* ptr3 = (uchar*)(rImg->imageData + y * rImg->widthStep / (sizeof(uchar)));
 			for (int x = 0; x < rImg->width; x++)
 			{
-				ptr3[x] = RSA_decode(ptr3[x]);
+				if (x / 2 == 0)
+					ptr3[x] = RSA_decode2(ptr3[x]);
+				else
+					ptr3[x] = RSA_decode(ptr3[x]);
 			}
 		}
 	}
@@ -656,7 +685,7 @@ void CExtract_InfoDlg::OnBnClickedOpencode()
 	cv::Mat Img2 = cv::Mat(zoomImgByMaxSide(&IplImage(sourceImg2), Pic_Size / 2), false);//将原图长边压缩至图片控件边长Pic_Size
 	gImg = cvLoadImage((LPCSTR)mPath2,-1);
 	ShowImage(&IplImage(Img2), IDC_SHOW3);        // 调用显示图片函数
-
+	//*********************************************************************
 	CFileDialog dlg3(
 		TRUE, NULL, NULL,
 		OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY,
@@ -706,8 +735,6 @@ void CExtract_InfoDlg::OnBnClickedOpencode()
 	cv::Mat Img4 = cv::Mat(zoomImgByMaxSide(&IplImage(sourceImg4), Pic_Size / 2), false);//将原图长边压缩至图片控件边长Pic_Size
 	xImg = cvLoadImage((LPCSTR)mPath4);
 	ShowImage(&IplImage(Img4), IDC_SHOW5);        // 调用显示图片函数
-
-
 }
 
 
@@ -715,7 +742,7 @@ void CExtract_InfoDlg::OnBnClickedSave()
 {
 	// TODO: Add your control notification handler code here
 	AfxMessageBox("将会对四个图片进行保存！请依次输入四个的名称： ");
-	TCHAR szFilter1[] = _T("BMP文件(*.bmp)|*.bmp|PNG文件(*.png)|*.gif|所有文件(*.*)|*.*||");
+	TCHAR szFilter1[] = _T("BMP文件(*.bmp)|*.bmp|");
 	// 构造保存文件对话框   
 	CFileDialog fileDlg1(FALSE, _T("bmp"), _T("001"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter1, this);
 	CString strFilePath1;
@@ -727,7 +754,7 @@ void CExtract_InfoDlg::OnBnClickedSave()
 		//SetDlgItemText(IDC_SAVE_EDIT, strFilePath);
 	}
 	cvSaveImage(strFilePath1,bImg);
-	TCHAR szFilter2[] = _T("BMP文件(*.bmp)|*.bmp|PNG文件(*.png)|*.gif|所有文件(*.*)|*.*||");
+	TCHAR szFilter2[] = _T("BMP文件(*.bmp)|*.bmp||");
 	// 构造保存文件对话框   
 	CFileDialog fileDlg2(FALSE, _T("bmp"), _T("001"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter2, this);
 	CString strFilePath2;
@@ -739,7 +766,7 @@ void CExtract_InfoDlg::OnBnClickedSave()
 		//SetDlgItemText(IDC_SAVE_EDIT, strFilePath);
 	}
 	cvSaveImage(strFilePath2, gImg);
-	TCHAR szFilter3[] = _T("BMP文件(*.bmp)|*.bmp|PNG文件(*.png)|*.gif|所有文件(*.*)|*.*||");
+	TCHAR szFilter3[] = _T("BMP文件(*.bmp)|*.bmp|");
 	// 构造保存文件对话框   
 	CFileDialog fileDlg3(FALSE, _T("bmp"), _T("001"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter3, this);
 	CString strFilePath3;
@@ -751,9 +778,10 @@ void CExtract_InfoDlg::OnBnClickedSave()
 		//SetDlgItemText(IDC_SAVE_EDIT, strFilePath);
 	}
 	cvSaveImage(strFilePath3, rImg);
-	TCHAR szFilter4[] = _T("BMP文件(*.bmp)|*.bmp|PNG文件(*.png)|*.gif|所有文件(*.*)|*.*||");
+
+	TCHAR szFilter4[] = _T("BMP文件(*.bmp)|*.bmp|");
 	// 构造保存文件对话框   
-	CFileDialog fileDlg4(FALSE, _T("bmp"), _T("001"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter4, this);
+	CFileDialog fileDlg4(FALSE, _T("bmp"), _T("001"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter3, this);
 	CString strFilePath4;
 	// 显示保存文件对话框   
 	if (IDOK == fileDlg4.DoModal())
@@ -763,6 +791,7 @@ void CExtract_InfoDlg::OnBnClickedSave()
 		//SetDlgItemText(IDC_SAVE_EDIT, strFilePath);
 	}
 	cvSaveImage(strFilePath4, xImg);
+
 	AfxMessageBox("加密完成！ copy right@安兴乐");
 
 

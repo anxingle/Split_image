@@ -57,6 +57,7 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 //	afx_msg void OnStnClickedTitle();
 	unsigned char RSA_decode(unsigned char pixes);
+	unsigned char RSA_decode2(unsigned char pixes);
 	void EncodeImg(IplImage*);
 	IplImage* DncodeImg(IplImage*);
 	afx_msg void OnBnClickedDecode();
